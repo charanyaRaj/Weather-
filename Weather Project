@@ -1,0 +1,77 @@
+# Create templates directory and index.html
+import os
+
+# Create templates directory structure
+os.makedirs('weather_app/templates/weather_app', exist_ok=True)
+
+# Create index.html template
+with open('weather_app/templates/weather_app/index.html', 'w') as f:
+    template_content = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .weather-card {
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .search-form {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 8px;
+            font-size: 16px;
+        }
+        button {
+            padding: 8px 16px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Weather App</h1>
+    
+    <form method="POST" class="search-form">
+        {% csrf_token %}
+        <input type="text" name="city" placeholder="Enter city name">
+        <button type="submit">Get Weather</button>
+    </form>
+
+    <div class="weather-card">
+        <h2>{{ weather.city }}</h2>
+        {% if weather.temperature %}
+            <p>Temperature: {{ weather.temperature }}\u00b0C</p>
+            <p>Condition: {{ weather.description }}</p>
+            {% if weather.icon %}
+                <img src="http://openweathermap.org/img/w/{{ weather.icon }}.png" alt="Weather icon">
+            {% endif %}
+        {% else %}
+            <p>{{ weather.description }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+"""
+    f.write(template_content)
+
+print("Created templates directory and index.html template")
